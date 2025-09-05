@@ -187,6 +187,18 @@ m6502Instruction instructions[MAX_INSTRUCTION_SIZE] =
 
     {&brk, 0x00, IMMEDIATE, 2, 7},
 
+    {&bvc, 0x50, RELATIVE, 2, 2},
+
+    {&bvs, 0x70, RELATIVE, 2, 2},
+
+    {&clc, 0x18, IMPLIED, 1, 2},
+
+    {&cld, 0xD8, IMPLIED, 1, 2},
+
+    {&cli, 0x58, IMPLIED, 1, 2},
+
+    {&clv, 0xB8, IMPLIED, 1, 2},
+
     {&eor, 0x49, IMMEDIATE, 2, 2},
     {&eor, 0x45, ZERO_PAGE, 2, 3},
     {&eor, 0x55, ZERO_PAGE_X, 2, 4},

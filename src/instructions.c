@@ -105,6 +105,42 @@ void brk(m6502Instruction *instruction)
     memcpy(&context.pc, mainMemory + IRQ_HANDLER, 2);
 }
 
+void bvc(m6502Instruction *instruction)
+{
+    if (!context.sr.v)
+    {
+        context.pc += (int8_t)instruction->operand.l;
+    }
+}
+
+void bvs(m6502Instruction *instruction)
+{
+    if (context.sr.v)
+    {
+        context.pc += (int8_t)instruction->operand.l;
+    }
+}
+
+void clc(m6502Instruction *instruction)
+{
+    context.sr.c = 0;
+}
+
+void cld(m6502Instruction *instruction)
+{
+    context.sr.d = 0;
+}
+
+void cli(m6502Instruction *instruction)
+{
+    context.sr.i = 0;
+}
+
+void clv(m6502Instruction *instruction)
+{
+    context.sr.v = 0;
+}
+
 void eor(m6502Instruction *instruction)
 {
     context.a = context.a | instruction->value;
