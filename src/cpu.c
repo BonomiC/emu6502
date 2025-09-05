@@ -176,6 +176,8 @@ m6502Instruction instructions[MAX_INSTRUCTION_SIZE] =
 
     {&bpl, 0x10, RELATIVE, 2, 2},
 
+    {&brk, 0x00, IMMEDIATE, 2, 7},
+
     {&lda, 0xA9, IMMEDIATE, 2, 2},
     {&lda, 0xA5, ZERO_PAGE, 2, 3},
     {&lda, 0xB5, ZERO_PAGE_X, 2, 4},

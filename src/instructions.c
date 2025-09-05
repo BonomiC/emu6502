@@ -94,6 +94,17 @@ void bpl(m6502Instruction *instruction)
     }
 }
 
+void brk(m6502Instruction *instruction)
+{
+    push_stack_word(context.pc);
+    m6502StatusReg sr = context.sr;
+    sr.x = 1;
+    sr.b = 1;
+    sr.i = 1;
+    push_stack(*((uint8_t*)&sr)); // Seems like a hack, definitely test this!
+    context.pc = IRQ_HANDLER;
+}
+
 void lda(m6502Instruction *instruction)
 {
     uint8_t value = instruction->value;

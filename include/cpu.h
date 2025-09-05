@@ -18,6 +18,7 @@
 #define RES_H 0xFFFD
 
 // IRQ (Interrupt Request) vector, 16-bit (LB, HB)
+#define IRQ_HANDLER 0xFFFE
 #define IRQ_L 0xFFFE
 #define IRQ_H 0xFFFF
 
@@ -52,6 +53,7 @@ void bit(m6502Instruction *instruction);
 void bmi(m6502Instruction *instruction);
 void bne(m6502Instruction *instruction);
 void bpl(m6502Instruction *instruction);
+void brk(m6502Instruction *instruction);
 void lda(m6502Instruction *instruction);
 void ldx(m6502Instruction *instruction);
 void ldy(m6502Instruction *instruction);
