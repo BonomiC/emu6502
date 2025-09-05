@@ -103,21 +103,6 @@ void step(void)
     instruction->exec(instruction, value);
 }
 
-void adc(m6502Instruction *instruction, uint16_t value)
-{
-    m6502Word res = {.w=context.a + value + context.sr.c};
-    context.sr.c = res.w > 0xFF;
-    context.sr.z = res.w == 0;
-    context.sr.v = CHECK_BIT((res.w ^ context.a) & (res.w ^ value), 7);
-    context.sr.n = CHECK_BIT(res.w, 7);
-    context.a = res.l;
-}
-
-void lda(m6502Instruction *instruction, uint16_t value)
-{
-    context.a = (uint8_t)value;
-}
-
 m6502Instruction instructions[MAX_INSTRUCTION_SIZE] =
 {
     {&adc, 0x69, IMMEDIATE, 2, 2},
@@ -130,5 +115,17 @@ m6502Instruction instructions[MAX_INSTRUCTION_SIZE] =
     {&adc, 0x71, INDIRECT_Y, 2, 5},
 
     {&lda, 0xA9, IMMEDIATE, 2, 2},
-    {&lda, 0xAD, ABSOLUTE, 3, 4}
+    {&lda, 0xAD, ABSOLUTE, 3, 4},
+
+    {&ldx, 0xA2, IMMEDIATE, 2, 2},
+    {&ldx, 0xA6, ZERO_PAGE, 2, 3},
+    {&ldx, 0xB6, ZERO_PAGE_Y, 2, 4},
+    {&ldx, 0xAE, ABSOLUTE, 3, 4},
+    {&ldx, 0xBE, ABSOLUTE_Y, 3, 4},
+
+    {&ldy, 0xA0, IMMEDIATE, 2, 2},
+    {&ldy, 0xA4, ZERO_PAGE, 2, 3},
+    {&ldy, 0xB4, ZERO_PAGE_X, 2, 4},
+    {&ldy, 0xAC, ABSOLUTE, 3, 4},
+    {&ldy, 0xBC, ABSOLUTE_X, 3, 4}
 };
