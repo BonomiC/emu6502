@@ -19,10 +19,13 @@ void initialize(void)
 
 void build_instruction_vector(void)
 {
-    for (uint16_t i; i < MAX_INSTRUCTION_SIZE; i++)
+    for (uint16_t i = 0; i < MAX_INSTRUCTION_SIZE; i++)
     {
         m6502Instruction instr = instructions[i];
-        instruction_vector[instr.opcode] = instr;
+        if (instr.exec != NULL)
+        {
+            instruction_vector[instr.opcode] = instr;
+        }
     }
 }
 
@@ -71,6 +74,12 @@ void step(void)
 
     // Grab the correct instruction for the opcode
     m6502Instruction *instruction = &instruction_vector[opcode];
+
+    if (instruction->exec == NULL)
+    {
+        printf("Instruction %#x has not yet been implemented!!! Skipping...\n", opcode);
+        return;
+    }
 
     // Extract any operand
     m6502Word operand;
