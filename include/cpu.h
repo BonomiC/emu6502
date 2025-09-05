@@ -5,7 +5,7 @@
 #include "isa.h"
 #include <stdint.h>
 
-#define CHECK_BIT(var,pos) ((var) & (1<<(pos)))
+#define CHECK_BIT(var,pos) ((var) & (1<<(pos)))>>(pos)
 
 #define MEMORY_SIZE (64 * 1024)
 
