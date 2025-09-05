@@ -4,6 +4,9 @@ OBJDIR = .obj
 BINDIR = bin
 INCDIR = include
 
+# -fno-common to disable warning due to large ram array
+CFLAGS = -fno-common
+
 # Executable name
 TARGET = m6502
 
