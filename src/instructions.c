@@ -365,6 +365,12 @@ void rts(m6502Instruction *instruction)
     context.pc++;
 }
 
+void sbc(m6502Instruction *instruction)
+{
+    instruction->value = ~instruction->value;
+    adc(instruction);
+}
+
 void sec(m6502Instruction *instruction)
 {
     context.sr.c = 1;

@@ -86,6 +86,7 @@ void rol(m6502Instruction *instruction);
 void ror(m6502Instruction *instruction);
 void rti(m6502Instruction *instruction);
 void rts(m6502Instruction *instruction);
+void sbc(m6502Instruction *instruction);
 void sec(m6502Instruction *instruction);
 void sed(m6502Instruction *instruction);
 void sei(m6502Instruction *instruction);

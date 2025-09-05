@@ -37,6 +37,8 @@ void print_context(void)
     printf("\tA: %#x\n", context.a);
     printf("\tX: %#x\n", context.x);
     printf("\tY: %#x\n", context.y);
+    printf("\tC: %#x\n", context.sr.c);
+    printf("\tV: %#x\n", context.sr.v);
 }
 
 void push_stack(uint8_t value)
@@ -309,6 +311,15 @@ m6502Instruction instructions[MAX_INSTRUCTION_SIZE] =
     {&rti, 0x40, IMPLIED, 1, 6},
 
     {&rts, 0x60, IMPLIED, 1, 6},
+
+    {&sbc, 0xE9, IMMEDIATE, 2, 2},
+    {&sbc, 0xE5, ZERO_PAGE, 2, 3},
+    {&sbc, 0xF5, ZERO_PAGE_X, 2, 4},
+    {&sbc, 0xED, ABSOLUTE, 3, 4},
+    {&sbc, 0xFD, ABSOLUTE_X, 3, 4},
+    {&sbc, 0xF9, ABSOLUTE_Y, 3, 4},
+    {&sbc, 0xE1, INDIRECT_X, 2, 6},
+    {&sbc, 0xF1, INDIRECT_Y, 2, 5},
 
     {&sec, 0x38, IMPLIED, 1, 2},
 
