@@ -35,9 +35,10 @@ m6502Instruction parse_opcode(uint8_t opcode);
 void execute_instruction(m6502Instruction *instruction);
 
 // These functions are defined in `instructions.c` to keep `cpu.c` cleaner
-void adc(m6502Instruction *instruction, uint16_t value);
-void lda(m6502Instruction *instruction, uint16_t value);
-void ldx(m6502Instruction *instruction, uint16_t value);
-void ldy(m6502Instruction *instruction, uint16_t value);
+void adc(m6502Instruction *instruction);
+void and(m6502Instruction *instruction);
+void lda(m6502Instruction *instruction);
+void ldx(m6502Instruction *instruction);
+void ldy(m6502Instruction *instruction);
 
 #endif /* CPU_H_ */

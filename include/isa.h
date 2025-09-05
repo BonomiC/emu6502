@@ -27,11 +27,14 @@ typedef enum
 
 typedef struct m6502Instruction
 {
-    void (*exec)(struct m6502Instruction*, uint16_t);
+    void (*exec)(struct m6502Instruction*);
     uint8_t opcode;
     addrMode_e addrMode;
     uint8_t size;
     uint8_t cycles;
+    m6502Word operand; // the operand provided to the instruciton
+    uint16_t address; // the address in memory the instruction will read/write
+    uint8_t value; // the value stored at the given address
 } m6502Instruction;
 
 extern m6502Instruction instructions[MAX_INSTRUCTION_SIZE];

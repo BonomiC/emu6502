@@ -45,62 +45,62 @@ void step(void)
     m6502Word operand;
     memcpy(&operand.w, &context.memory[context.pc], instruction->size-1);
     context.pc += instruction->size-1;
+    instruction->operand = operand;
 
     // Get value based on address mode
-    uint16_t value;
     switch (instruction->addrMode)
     {
     case IMPLIED:
-        value = 0;
         break;
     case IMMEDIATE:
-        value = operand.l;
+        instruction->value = operand.l;
         break;
     case ZERO_PAGE:
-        value = context.memory[operand.l];
+        instruction->address = operand.l;
+        instruction->value = context.memory[instruction->address];
         break;
     case ZERO_PAGE_X:
-        value = context.memory[(uint16_t)operand.l + context.x];
+        instruction->address = (uint16_t)operand.l + context.x;
+        instruction->value = context.memory[instruction->address];
         break;
     case ZERO_PAGE_Y:
-        value = context.memory[(uint16_t)operand.l + context.y];
+        instruction->address = (uint16_t)operand.l + context.y;
+        instruction->value = context.memory[instruction->address];
         break;
     case ABSOLUTE:
-        value = context.memory[operand.w];
+        instruction->address = operand.w;
+        instruction->value = context.memory[instruction->address];
         break;
     case ABSOLUTE_X:
-        value = context.memory[operand.w + context.x];
+        instruction->address = operand.w + context.x;
+        instruction->value = context.memory[instruction->address];
         break;
     case ABSOLUTE_Y:
-        value = context.memory[operand.w + context.y];
+        instruction->address = operand.w + context.y;
+        instruction->value = context.memory[instruction->address];
         break;
     case INDIRECT:
-    {
-        uint16_t addr;
-        memcpy(&addr, context.memory + operand.w, sizeof(addr));
-        value = context.memory[addr];
+        memcpy(&instruction->address, context.memory + operand.w, sizeof(instruction->address));
+        instruction->value = context.memory[instruction->address];
         break;
-    }
     case INDIRECT_X:
-    {
-        uint8_t addr = context.memory[(uint16_t)operand.l + context.x];
-        value = context.memory[addr];
+        instruction->address = context.memory[(uint16_t)operand.l + context.x];
+        instruction->value = context.memory[instruction->address];
         break;
-    }
     case INDIRECT_Y:
     {
-        uint16_t addr = context.memory[operand.l];
-        addr += context.y;
-        value = context.memory[addr];
+        instruction->address = context.memory[operand.l];
+        instruction->address += context.y;
+        instruction->value = context.memory[instruction->address];
         break;
     }
     case RELATIVE:
-        value = context.pc + operand.w;
+        instruction->address = context.pc + operand.w;
         break;
     }
 
     // Execute the instruction
-    instruction->exec(instruction, value);
+    instruction->exec(instruction);
 }
 
 m6502Instruction instructions[MAX_INSTRUCTION_SIZE] =
