@@ -21,6 +21,8 @@
 #define IRQ_L 0xFFFE
 #define IRQ_H 0xFFFF
 
+#define STACK_START 0x0100
+
 extern m6502Context context;
 extern uint8_t mainMemory[MEMORY_SIZE]; // 64K Memory
 
@@ -29,6 +31,11 @@ extern m6502Instruction instruction_vector[MAX_INSTRUCTION_SIZE];
 void initialize(void);
 void build_instruction_vector(void);
 void print_context(void);
+
+void push_stack(uint8_t value);
+uint8_t pop_stack(void);
+void push_stack_word(uint16_t value);
+uint16_t pop_stack_word(void);
 
 void step(void);
 m6502Instruction parse_opcode(uint8_t opcode);

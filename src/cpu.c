@@ -10,6 +10,8 @@ void initialize(void)
     memset(&context, 0, sizeof(m6502Context));
     memset(mainMemory, 0, MEMORY_SIZE);
 
+    context.sp = 0xFF; // Common for stack pointer to init to end
+
     context.memory = mainMemory;
 
     build_instruction_vector();
@@ -31,6 +33,34 @@ void print_context(void)
     printf("\tA: %#x\n", context.a);
     printf("\tX: %#x\n", context.x);
     printf("\tY: %#x\n", context.y);
+}
+
+void push_stack(uint8_t value)
+{
+    mainMemory[STACK_START + context.sp] = value;
+    context.sp--;
+}
+
+uint8_t pop_stack(void)
+{
+    context.sp++;
+    return mainMemory[STACK_START + context.sp];
+}
+
+void push_stack_word(uint16_t value)
+{
+    m6502Word word;
+    word.w = value;
+    push_stack(word.h);
+    push_stack(word.l);
+}
+
+uint16_t pop_stack_word(void)
+{
+    m6502Word word;
+    word.l = pop_stack();
+    word.h = pop_stack();
+    return word.w;
 }
 
 void step(void)
