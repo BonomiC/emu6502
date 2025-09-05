@@ -269,6 +269,23 @@ m6502Instruction instructions[MAX_INSTRUCTION_SIZE] =
     {&ldy, 0xAC, ABSOLUTE, 3, 4},
     {&ldy, 0xBC, ABSOLUTE_X, 3, 4},
 
+    {&lsr, 0x4A, IMPLIED, 1, 2},
+    {&lsr, 0x46, ZERO_PAGE, 2, 5},
+    {&lsr, 0x56, ZERO_PAGE_X, 2, 6},
+    {&lsr, 0x4E, ABSOLUTE, 3, 6},
+    {&lsr, 0x5E, ABSOLUTE_X, 3, 7},
+
+    {&nop, 0xEA, IMPLIED, 1, 2},
+
+    {&ora, 0x09, IMMEDIATE, 2, 2},
+    {&ora, 0x05, ZERO_PAGE, 2, 3},
+    {&ora, 0x15, ZERO_PAGE_X, 2, 4},
+    {&ora, 0x0D, ABSOLUTE, 3, 4},
+    {&ora, 0x1D, ABSOLUTE_X, 3, 4},
+    {&ora, 0x19, ABSOLUTE_Y, 3, 4},
+    {&ora, 0x01, INDIRECT_X, 2, 6},
+    {&ora, 0x11, INDIRECT_Y, 2, 5},
+
     {&pha, 0x48, IMPLIED, 1, 3},
 
     {&php, 0x08, IMPLIED, 1, 3},

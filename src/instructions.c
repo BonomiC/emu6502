@@ -249,6 +249,36 @@ void ldy(m6502Instruction *instruction)
     context.y = value;
 }
 
+void lsr(m6502Instruction *instruction)
+{
+    if (instruction->addrMode == IMPLIED)
+    {
+        context.sr.c = CHECK_BIT(context.a, 0);
+        context.a >>= 1;
+        context.sr.z = context.a == 0;
+        context.sr.n = 0;
+    }
+
+    context.sr.c = CHECK_BIT(instruction->value, 0);
+    instruction->value >>= 1;
+    context.sr.z = instruction->value == 0;
+    context.sr.n = 0;
+
+    mainMemory[instruction->address] = instruction->value;
+}
+
+void nop(m6502Instruction *instruction)
+{
+    (void)instruction; // NOPPPP
+}
+
+void ora(m6502Instruction *instruction)
+{
+    context.a = context.a | instruction->value;
+    context.sr.z = context.a == 0;
+    context.sr.n = CHECK_BIT(context.a, 7);
+}
+
 void pha(m6502Instruction *instruction)
 {
     push_stack(context.a);
