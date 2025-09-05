@@ -1,52 +1,51 @@
 #include <stdio.h>
 #include "cpu.h"
 
+#define ADD_INSTRUCTION(...) add_instruction((uint8_t[]){__VA_ARGS__}, sizeof((uint8_t[]){__VA_ARGS__}))
+
+void add_instruction(uint8_t *instructions, uint8_t size)
+{
+    static uint16_t ram_pos = 1;
+    memcpy(mainMemory + ram_pos, instructions, size);
+    ram_pos += size;
+}
+
 int main(int argc, char** argv)
 {
     initialize();
 
-    uint16_t ram_pos = 0;
+    context.pc = 0x0001;
 
-    uint8_t one[] = {0xA9, 27}; // LDA #27
-    memcpy(mainMemory + ram_pos, one, 2);
-    ram_pos += 2;
+    ADD_INSTRUCTION(0xA9, 27); // LDA #27
 
-    uint8_t two[] = {0xAD, 0xCD, 0xAB}; // LDA $ABCD
-    memcpy(mainMemory+ram_pos, two, 3);
-    ram_pos += 3;
+    ADD_INSTRUCTION(0xAD, 0xCD, 0xAB); // LDA $ABCD
 
-    uint8_t three[] = {0x69, 0xA}; // ADC #10
-    memcpy(mainMemory+ram_pos, three, 2);
-    ram_pos += 2;
+    ADD_INSTRUCTION(0x69, 0xA); // ADC #10
 
-    uint8_t test[] = {0xA2, 0x10}; // LDX #10
-    memcpy(mainMemory+ram_pos, test, 2);
-    ram_pos += 2;
+    ADD_INSTRUCTION(0xA2, 0x10); // LDX #10
 
-    uint8_t four[] = {0x65, 0xBF}; // ADC $BF
-    memcpy(mainMemory+ram_pos, four, 2);
-    ram_pos += 2;
+    ADD_INSTRUCTION(0x65, 0xBF); // ADC $BF
 
-    uint8_t five[] = {0x75, 0xAF}; // ADC $AF,X
-    memcpy(mainMemory+ram_pos, five, 2);
-    ram_pos += 2;
+    ADD_INSTRUCTION(0x75, 0xAF); // ADC $AF,X
+
+    ADD_INSTRUCTION(0x0A); // ASL
+
+    ADD_INSTRUCTION(0x06, 0xCD); // ASL $CD
+
+    ADD_INSTRUCTION(0xA4, 0xCD); // LDY $CD,X
 
     mainMemory[0xABCD] = 195;
     mainMemory[0x00BF] = 20;
+    mainMemory[0x00CD] = 17;
+
 
     print_context();
-    step();
-    print_context();
-    step();
-    print_context();
-    step();
-    print_context();
-    step();
-    print_context();
-    step();
-    print_context();
-    step();
-    print_context();
+
+    while (mainMemory[context.pc] != 0x00)
+    {
+        step();
+        print_context();
+    }
 
     return 0;
 }
