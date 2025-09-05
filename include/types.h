@@ -16,7 +16,7 @@ typedef struct m6502StatusReg
 {
     uint8_t c : 1; // Carry
     uint8_t z : 1; // Zero
-    uint8_t i : 1; // Interrupt
+    uint8_t i : 1; // Interrupt disable
     uint8_t d : 1; // Decimal
     uint8_t b : 1; // Break
     uint8_t x : 1; // ignored
