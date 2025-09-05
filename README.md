@@ -1,6 +1,10 @@
 # emu6502
 A very basic MOS6502 interpreter. Might eventually be used in an NES emulator 🤷🏻‍♂️
 
+## Todo
+- Use address mode to determine operand size instead of hard coding it per instruction
+- Might be able to perform address mode parsing before running instruction algorithms?
+
 ## Sources
 - [nesdev 6502 instructions](https://www.nesdev.org/wiki/6502_instructions)
 - [nesdev NES referenece](https://www.nesdev.org/wiki/NES_reference_guide)
