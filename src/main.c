@@ -8,8 +8,6 @@ int main(int argc, char** argv)
     uint16_t ram_pos = 0;
 
     uint8_t one[] = {0xA9, 27}; // LDA #27
-    mainMemory[0] = 0xA9;
-    mainMemory[1] = 27;
     memcpy(mainMemory + ram_pos, one, 2);
     ram_pos += 2;
 
