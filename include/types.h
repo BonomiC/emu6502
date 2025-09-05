@@ -3,7 +3,7 @@
 
 #include <stdint.h>
 
-typedef union
+typedef union m6502Word
 {
     uint16_t w;
     struct
@@ -12,21 +12,21 @@ typedef union
     };
 } m6502Word;
 
-typedef struct
+typedef struct m6502StatusReg
 {
-    uint8_t n : 1; // Negative
-    uint8_t v : 1; // Overflow
-    uint8_t   : 1; // ignored
-    uint8_t b : 1; // Break
-    uint8_t d : 1; // Decimal
-    uint8_t i : 1; // Interrupt
-    uint8_t z : 1; // Zero
     uint8_t c : 1; // Carry
+    uint8_t z : 1; // Zero
+    uint8_t i : 1; // Interrupt
+    uint8_t d : 1; // Decimal
+    uint8_t b : 1; // Break
+    uint8_t   : 1; // ignored
+    uint8_t v : 1; // Overflow
+    uint8_t n : 1; // Negative
 } m6502StatusReg;
 
 typedef uint8_t m6502Reg;
 
-typedef struct
+typedef struct m6502Context
 {
     // PC is 16bit, but is often accessed as high/low bytes individually
     union
