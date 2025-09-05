@@ -10,6 +10,13 @@ void adc(m6502Instruction *instruction)
     context.a = res.l;
 }
 
+void and(m6502Instruction *instruction)
+{
+    context.a = context.a & instruction->value;
+    context.sr.z = context.a == 0;
+    context.sr.n = CHECK_BIT(context.a, 7);
+}
+
 void lda(m6502Instruction *instruction)
 {
     uint8_t value = instruction->value;
