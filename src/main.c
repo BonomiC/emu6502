@@ -9,6 +9,7 @@ void add_instruction(uint8_t *instructions, uint8_t size)
     static uint16_t ram_pos = 0x0600;
     memcpy(mainMemory + ram_pos, instructions, size);
     ram_pos += size;
+    printf("RAM SIZE: %x\n", ram_pos);
 }
 
 void add_program(uint16_t addr, uint8_t *program, uint8_t size)
@@ -100,23 +101,54 @@ int main(int argc, char** argv)
     // /* $FFFE vector */
     // ADD_PROGRAM(IRQ_HANDLER, 0x20, 0x06);
 
-    ADD_INSTRUCTION(
-        0xA2, 0xFF, 0x9A,       /* LDX #$FF, TXS */
-        0xA9, 0x50, 0xE9, 0x20, /* LDA #$50, SBC #$20 */
-        0xA9, 0x10, 0xE9, 0x20, /* LDA #$10, SBC #$20 */
-        0xA9, 0x80, 0xE9, 0x01  /* LDA #$80, SBC #$01 */
-    );
+    // ADD_INSTRUCTION(
+    //     0xA2, 0xFF, 0x9A,       /* LDX #$FF, TXS */
+    //     0xA9, 0x50, 0xE9, 0x20, /* LDA #$50, SBC #$20 */
+    //     0xA9, 0x10, 0xE9, 0x20, /* LDA #$10, SBC #$20 */
+    //     0xA9, 0x80, 0xE9, 0x01  /* LDA #$80, SBC #$01 */
+    // );
 
     // ADD_INSTRUCTION(0xA9, 0x50, 0xE9, 0x20); /* LDA #$50, SBC #$20 */
 
+    ADD_INSTRUCTION(
+        /* $0600 init + instruction tests */
+        0xA2,0xFF,       // LDX #$FF
+        0x9A,            // TXS
+        0xA9,0x10,       // LDA #$10
+        0xA0,0x20,       // LDY #$20
+        0x69,0x05,       // ADC #$05
+        0xE9,0x03,       // SBC #$03
+        0x29,0x0F,       // AND #$0F
+        0x09,0xF0,       // ORA #$F0
+        0x49,0x0F,       // EOR #$0F
+        0x24,0x00,       // BIT $00
+        0x0A,0x4A,0x2A,0x6A, // ASL, LSR, ROL, ROR
+        0x48,0x08,0x68,0x28,0xBA,0x9A, // PHA, PHP, PLA, PLP, TSX, TXS
+        0x8D,0x00,0x20,  // STA $2000
+        0x8E,0x01,0x20,  // STX $2001
+        0x8C,0x02,0x20,  // STY $2002
+        0x20,0x20,0x06,  // JSR $0620 → subroutine
+
+        /* $0620 subroutine */
+        0xA9,0x99,       // LDA #$99
+        0x60,            // RTS
+
+        /* Infinite loop at $0623 */
+        0x4C,0x23,0x06,  // JMP $0623
+
+        /* BRK/IRQ vector immediately after */
+        0x23,0x06        // Vector = $0623
+    );
+
+    printf("0x062B: %x\n", mainMemory[0x0623]);
+    return 0;
+
     print_context();
 
-    uint16_t ctr;
-    while (mainMemory[context.pc] != 0x00)
+    while (1)
     {
         step();
         print_context();
-        ctr++;
     }
 
     return 0;
