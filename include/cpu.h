@@ -1,5 +1,5 @@
-#ifndef M6502_H_
-#define M6502_H_
+#ifndef CPU_H_
+#define CPU_H_
 
 #include "types.h"
 #include "isa.h"
@@ -34,7 +34,7 @@ void step(void);
 m6502Instruction parse_opcode(uint8_t opcode);
 void execute_instruction(m6502Instruction *instruction);
 
-void adc(m6502Instruction *instruction, m6502Word operand);
-void lda(m6502Instruction *instruction, m6502Word operand);
+void adc(m6502Instruction *instruction, uint16_t value);
+void lda(m6502Instruction *instruction, uint16_t value);
 
-#endif /* M6502_H_ */
+#endif /* CPU_H_ */

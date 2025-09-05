@@ -19,14 +19,15 @@ typedef enum
     ABSOLUTE,
     ABSOLUTE_X,
     ABSOLUTE_Y,
-    INDIRECT_X,
-    INDIRECT_Y,
+    INDIRECT,
+    INDIRECT_X, // Pre-indexed offset
+    INDIRECT_Y, // Post-indexed offset
     RELATIVE
 } addrMode_e;
 
 typedef struct m6502Instruction
 {
-    void (*exec)(struct m6502Instruction*, m6502Word);
+    void (*exec)(struct m6502Instruction*, uint16_t);
     uint8_t opcode;
     addrMode_e addrMode;
     uint8_t size;

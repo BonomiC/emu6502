@@ -46,49 +46,76 @@ void step(void)
     memcpy(&operand.w, &context.memory[context.pc], instruction->size-1);
     context.pc += instruction->size-1;
 
-    // Execute the instruction
-    instruction->exec(instruction, operand);
-}
-
-void adc(m6502Instruction *instruction, m6502Word operand)
-{
-    uint8_t val;
+    // Get value based on address mode
+    uint16_t value;
     switch (instruction->addrMode)
     {
+    case IMPLIED:
+        value = 0;
+        break;
     case IMMEDIATE:
-        val = operand.l;
+        value = operand.l;
         break;
     case ZERO_PAGE:
-        val = context.memory[operand.l];
+        value = context.memory[operand.l];
+        break;
+    case ZERO_PAGE_X:
+        value = context.memory[(uint16_t)operand.l + context.x];
+        break;
+    case ZERO_PAGE_Y:
+        value = context.memory[(uint16_t)operand.l + context.y];
         break;
     case ABSOLUTE:
-        val = context.memory[operand.w];
+        value = context.memory[operand.w];
         break;
-    default:
+    case ABSOLUTE_X:
+        value = context.memory[operand.w + context.x];
+        break;
+    case ABSOLUTE_Y:
+        value = context.memory[operand.w + context.y];
+        break;
+    case INDIRECT:
+    {
+        uint16_t addr;
+        memcpy(&addr, context.memory + operand.w, sizeof(addr));
+        value = context.memory[addr];
+        break;
+    }
+    case INDIRECT_X:
+    {
+        uint8_t addr = context.memory[(uint16_t)operand.l + context.x];
+        value = context.memory[addr];
+        break;
+    }
+    case INDIRECT_Y:
+    {
+        uint16_t addr = context.memory[operand.l];
+        addr += context.y;
+        value = context.memory[addr];
+        break;
+    }
+    case RELATIVE:
+        value = context.pc + operand.w;
         break;
     }
 
-    m6502Word res = {.w=context.a + val + context.sr.c};
+    // Execute the instruction
+    instruction->exec(instruction, value);
+}
+
+void adc(m6502Instruction *instruction, uint16_t value)
+{
+    m6502Word res = {.w=context.a + value + context.sr.c};
     context.sr.c = res.w > 0xFF;
     context.sr.z = res.w == 0;
-    context.sr.v = CHECK_BIT((res.w ^ context.a) & (res.w ^ operand.w), 7);
+    context.sr.v = CHECK_BIT((res.w ^ context.a) & (res.w ^ value), 7);
     context.sr.n = CHECK_BIT(res.w, 7);
     context.a = res.l;
 }
 
-void lda(m6502Instruction *instruction, m6502Word operand)
+void lda(m6502Instruction *instruction, uint16_t value)
 {
-    switch (instruction->addrMode)
-    {
-        case IMPLIED:
-            break;
-        case IMMEDIATE:
-            context.a = operand.l;
-            break;
-        case ABSOLUTE:
-            context.a = context.memory[operand.w];
-            break;
-    }
+    context.a = (uint8_t)value;
 }
 
 m6502Instruction instructions[MAX_INSTRUCTION_SIZE] =
