@@ -17,6 +17,26 @@ void and(m6502Instruction *instruction)
     context.sr.n = CHECK_BIT(context.a, 7);
 }
 
+void asl(m6502Instruction *instruction)
+{
+    if (instruction->addrMode == ACCUMULATOR)
+    {
+        context.sr.c = CHECK_BIT(context.a, 7);
+        context.a <<= 1;
+        context.sr.z = context.a == 0;
+        context.sr.n = CHECK_BIT(context.a, 7);
+        return;
+    }
+
+    context.sr.c = CHECK_BIT(instruction->value, 7);
+    instruction->value <<= 1;
+    context.sr.z = instruction->value == 0;
+    context.sr.n = CHECK_BIT(instruction->value, 7);
+
+    // Write the new value back to memory
+    context.memory[instruction->address] = instruction->value;
+}
+
 void lda(m6502Instruction *instruction)
 {
     uint8_t value = instruction->value;

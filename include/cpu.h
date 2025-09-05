@@ -37,6 +37,7 @@ void execute_instruction(m6502Instruction *instruction);
 // These functions are defined in `instructions.c` to keep `cpu.c` cleaner
 void adc(m6502Instruction *instruction);
 void and(m6502Instruction *instruction);
+void asl(m6502Instruction *instruction);
 void lda(m6502Instruction *instruction);
 void ldx(m6502Instruction *instruction);
 void ldy(m6502Instruction *instruction);
