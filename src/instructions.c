@@ -365,6 +365,50 @@ void rts(m6502Instruction *instruction)
     context.pc++;
 }
 
+void sec(m6502Instruction *instruction)
+{
+    context.sr.c = 1;
+}
+
+void sed(m6502Instruction *instruction)
+{
+    context.sr.d = 1;
+}
+
+void sei(m6502Instruction *instruction)
+{
+    context.sr.i = 1;
+}
+
+void sta(m6502Instruction *instruction)
+{
+    mainMemory[instruction->address] = context.a;
+}
+
+void stx(m6502Instruction *instruction)
+{
+    mainMemory[instruction->address] = context.x;
+}
+
+void sty(m6502Instruction *instruction)
+{
+    mainMemory[instruction->address] = context.y;
+}
+
+void tax(m6502Instruction *instruction)
+{
+    context.x = context.a;
+    context.sr.z = context.x == 0;
+    context.sr.n = CHECK_BIT(context.x, 7);
+}
+
+void tay(m6502Instruction *instruction)
+{
+    context.y = context.a;
+    context.sr.z = context.y == 0;
+    context.sr.n = CHECK_BIT(context.y, 7);
+}
+
 void tsx(m6502Instruction *instruction)
 {
     context.x = context.sp;
@@ -372,7 +416,21 @@ void tsx(m6502Instruction *instruction)
     context.sr.n = CHECK_BIT(context.x, 7);
 }
 
+void txa(m6502Instruction *instruction)
+{
+    context.a = context.x;
+    context.sr.z = context.a == 0;
+    context.sr.n = CHECK_BIT(context.a, 7);
+}
+
 void txs(m6502Instruction *instruction)
 {
     context.sp = context.x;
+}
+
+void tya(m6502Instruction *instruction)
+{
+    context.a = context.y;
+    context.sr.z = context.a == 0;
+    context.sr.n = CHECK_BIT(context.a, 7);
 }

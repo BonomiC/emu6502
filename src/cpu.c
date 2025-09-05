@@ -310,7 +310,37 @@ m6502Instruction instructions[MAX_INSTRUCTION_SIZE] =
 
     {&rts, 0x60, IMPLIED, 1, 6},
 
+    {&sec, 0x38, IMPLIED, 1, 2},
+
+    {&sed, 0xF8, IMPLIED, 1, 2},
+
+    {&sei, 0x78, IMPLIED, 1, 2},
+
+    {&sta, 0x85, ZERO_PAGE, 2, 3},
+    {&sta, 0x95, ZERO_PAGE_X, 2, 4},
+    {&sta, 0x8D, ABSOLUTE, 3, 4},
+    {&sta, 0x9D, ABSOLUTE_X, 3, 5},
+    {&sta, 0x99, ABSOLUTE_Y, 3, 5},
+    {&sta, 0x81, INDIRECT_X, 2, 6},
+    {&sta, 0x91, INDIRECT_Y, 2, 6},
+
+    {&stx, 0x86, ZERO_PAGE, 2, 3},
+    {&stx, 0x96, ZERO_PAGE_Y, 2, 4},
+    {&stx, 0x8E, ABSOLUTE, 3, 4},
+
+    {&sty, 0x84, ZERO_PAGE, 2, 3},
+    {&sty, 0x94, ZERO_PAGE_X, 2, 4},
+    {&sty, 0x8C, ABSOLUTE, 3, 4},
+
+    {&tax, 0xAA, IMPLIED, 1, 2},
+
+    {&tay, 0xA8, IMPLIED, 1, 2},
+
     {&tsx, 0xBA, IMPLIED, 1, 2},
 
-    {&txs, 0x9A, IMPLIED, 1, 2}
+    {&txa, 0x8A, IMPLIED, 1, 2},
+
+    {&txs, 0x9A, IMPLIED, 1, 2},
+
+    {&tya, 0x98, IMPLIED, 1, 2}
 };

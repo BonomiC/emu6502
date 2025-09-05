@@ -86,7 +86,17 @@ void rol(m6502Instruction *instruction);
 void ror(m6502Instruction *instruction);
 void rti(m6502Instruction *instruction);
 void rts(m6502Instruction *instruction);
+void sec(m6502Instruction *instruction);
+void sed(m6502Instruction *instruction);
+void sei(m6502Instruction *instruction);
+void sta(m6502Instruction *instruction);
+void stx(m6502Instruction *instruction);
+void sty(m6502Instruction *instruction);
+void tax(m6502Instruction *instruction);
+void tay(m6502Instruction *instruction);
 void tsx(m6502Instruction *instruction);
+void txa(m6502Instruction *instruction);
 void txs(m6502Instruction *instruction);
+void tya(m6502Instruction *instruction);
 
 #endif /* CPU_H_ */
