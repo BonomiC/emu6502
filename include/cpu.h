@@ -71,6 +71,7 @@ void inx(m6502Instruction *instruction);
 void iny(m6502Instruction *instruction);
 void eor(m6502Instruction *instruction);
 void jmp(m6502Instruction *instruction);
+void jsr(m6502Instruction *instruction);
 void lda(m6502Instruction *instruction);
 void ldx(m6502Instruction *instruction);
 void ldy(m6502Instruction *instruction);

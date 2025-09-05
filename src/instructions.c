@@ -219,6 +219,12 @@ void jmp(m6502Instruction *instruction)
     context.pc = instruction->operand.w;
 }
 
+void jsr(m6502Instruction *instruction)
+{
+    push_stack_word(context.pc);
+    context.pc = instruction->operand.w;
+}
+
 void lda(m6502Instruction *instruction)
 {
     uint8_t value = instruction->value;

@@ -246,6 +246,8 @@ m6502Instruction instructions[MAX_INSTRUCTION_SIZE] =
     {&jmp, 0x4C, ABSOLUTE, 3, 3},
     {&jmp, 0x6C, INDIRECT, 3, 5},
 
+    {&jsr, 0x20, ABSOLUTE, 3, 6},
+
     {&lda, 0xA9, IMMEDIATE, 2, 2},
     {&lda, 0xA5, ZERO_PAGE, 2, 3},
     {&lda, 0xB5, ZERO_PAGE_X, 2, 4},
