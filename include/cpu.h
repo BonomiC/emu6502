@@ -54,6 +54,8 @@ void bmi(m6502Instruction *instruction);
 void bne(m6502Instruction *instruction);
 void bpl(m6502Instruction *instruction);
 void brk(m6502Instruction *instruction);
+void eor(m6502Instruction *instruction);
+void jmp(m6502Instruction *instruction);
 void lda(m6502Instruction *instruction);
 void ldx(m6502Instruction *instruction);
 void ldy(m6502Instruction *instruction);

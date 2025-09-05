@@ -105,6 +105,18 @@ void brk(m6502Instruction *instruction)
     memcpy(&context.pc, mainMemory + IRQ_HANDLER, 2);
 }
 
+void eor(m6502Instruction *instruction)
+{
+    context.a = context.a | instruction->value;
+    context.sr.z = context.a == 0;
+    context.sr.n = CHECK_BIT(context.a, 7);
+}
+
+void jmp(m6502Instruction *instruction)
+{
+    context.pc = instruction->operand.w;
+}
+
 void lda(m6502Instruction *instruction)
 {
     uint8_t value = instruction->value;
