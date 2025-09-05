@@ -136,6 +136,15 @@ m6502Instruction instructions[MAX_INSTRUCTION_SIZE] =
 
     {&beq, 0xF0, RELATIVE, 2, 2},
 
+    {&bit, 0x24, ZERO_PAGE, 2, 3},
+    {&bit, 0x2C, ABSOLUTE, 3, 4},
+
+    {&bmi, 0x30, RELATIVE, 2, 2},
+
+    {&bne, 0xD0, RELATIVE, 2, 2},
+
+    {&bpl, 0x10, RELATIVE, 2, 2},
+
     {&lda, 0xA9, IMMEDIATE, 2, 2},
     {&lda, 0xA5, ZERO_PAGE, 2, 3},
     {&lda, 0xB5, ZERO_PAGE_X, 2, 4},

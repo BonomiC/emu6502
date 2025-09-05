@@ -50,8 +50,7 @@ void bcs(m6502Instruction *instruction)
 {
     if (context.sr.c)
     {
-        int8_t offset = (int8_t)instruction->operand.l;
-        context.pc += offset;
+        context.pc += (int8_t)instruction->operand.l;
     }
 }
 
@@ -59,8 +58,39 @@ void beq(m6502Instruction *instruction)
 {
     if (context.sr.z)
     {
-        int8_t offset = (int8_t)instruction->operand.l;
-        context.pc += offset;
+        context.pc += (int8_t)instruction->operand.l;
+    }
+}
+
+void bit(m6502Instruction *instruction)
+{
+    uint8_t result = context.a & instruction->value;
+    context.sr.z = result == 0;
+    context.sr.v = CHECK_BIT(result, 6);
+    context.sr.n = CHECK_BIT(result, 7);
+}
+
+void bmi(m6502Instruction *instruction)
+{
+    if (context.sr.n)
+    {
+        context.pc += (int8_t)instruction->operand.l;
+    }
+}
+
+void bne(m6502Instruction *instruction)
+{
+    if (!context.sr.z)
+    {
+        context.pc += (int8_t)instruction->operand.l;
+    }
+}
+
+void bpl(m6502Instruction *instruction)
+{
+    if (!context.sr.n)
+    {
+        context.pc += (int8_t)instruction->operand.l;
     }
 }
 
