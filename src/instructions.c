@@ -37,6 +37,15 @@ void asl(m6502Instruction *instruction)
     context.memory[instruction->address] = instruction->value;
 }
 
+void bcc(m6502Instruction *instruction)
+{
+    if (!context.sr.c)
+    {
+        int8_t offset = (int8_t)instruction->operand.l;
+        context.pc += offset;
+    }
+}
+
 void lda(m6502Instruction *instruction)
 {
     uint8_t value = instruction->value;

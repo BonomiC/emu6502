@@ -32,12 +32,13 @@ int main(int argc, char** argv)
 
     ADD_INSTRUCTION(0x06, 0xCD); // ASL $CD
 
-    ADD_INSTRUCTION(0xA4, 0xCD); // LDY $CD,X
+    ADD_INSTRUCTION(0xA4, 0xCD); // LDY $CD
+
+    // ADD_INSTRUCTION(0x90, -6); // BCC -6 // Will cause loop prev 2 instructions until carry bit is set
 
     mainMemory[0xABCD] = 195;
     mainMemory[0x00BF] = 20;
     mainMemory[0x00CD] = 17;
-
 
     print_context();
 

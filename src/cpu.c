@@ -96,6 +96,7 @@ void step(void)
     }
     case RELATIVE:
         instruction->address = context.pc + operand.w;
+        instruction->value = operand.l;
         break;
     }
 
@@ -128,6 +129,8 @@ m6502Instruction instructions[MAX_INSTRUCTION_SIZE] =
     {&asl, 0x16, ZERO_PAGE_X, 2, 6},
     {&asl, 0x0E, ABSOLUTE, 3, 6},
     {&asl, 0x1E, ABSOLUTE_X, 3, 7},
+
+    {&bcc, 0x90, RELATIVE, 2, 2},
 
     {&lda, 0xA9, IMMEDIATE, 2, 2},
     {&lda, 0xA5, ZERO_PAGE, 2, 3},
