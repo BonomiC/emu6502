@@ -8,7 +8,7 @@ m6502Instruction instruction_vector[MAX_INSTRUCTION_SIZE];
 void initialize(void)
 {
     memset(&context, 0, sizeof(m6502Context));
-    memset(mainMemory, 0, 64 * 1024);
+    memset(mainMemory, 0, MEMORY_SIZE);
 
     context.memory = mainMemory;
 
@@ -91,7 +91,7 @@ void lda(m6502Instruction *instruction, m6502Word operand)
     }
 }
 
-m6502Instruction instructions[256] =
+m6502Instruction instructions[MAX_INSTRUCTION_SIZE] =
 {
     {&adc, 0x69, IMMEDIATE, 2, 2},
     {&adc, 0x65, ZERO_PAGE, 2, 3},
