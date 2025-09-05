@@ -165,11 +165,53 @@ void cpy(m6502Instruction *instruction)
     context.sr.n = CHECK_BIT(result, 7);
 }
 
+void dec(m6502Instruction *instruction)
+{
+    mainMemory[instruction->address] -= 1;
+    context.sr.z = mainMemory[instruction->address] == 0;
+    context.sr.n = CHECK_BIT(mainMemory[instruction->address], 7);
+}
+
+void dex(m6502Instruction *instruction)
+{
+    context.x--;
+    context.sr.z = context.x == 0;
+    context.sr.n = CHECK_BIT(context.x, 7);
+}
+
+void dey(m6502Instruction *instruction)
+{
+    context.y--;
+    context.sr.z = context.y == 0;
+    context.sr.n = CHECK_BIT(context.y, 7);
+}
+
 void eor(m6502Instruction *instruction)
 {
     context.a = context.a | instruction->value;
     context.sr.z = context.a == 0;
     context.sr.n = CHECK_BIT(context.a, 7);
+}
+
+void inc(m6502Instruction *instruction)
+{
+    mainMemory[instruction->address] += 1;
+    context.sr.z = mainMemory[instruction->address] == 0;
+    context.sr.n = CHECK_BIT(mainMemory[instruction->address], 7);
+}
+
+void inx(m6502Instruction *instruction)
+{
+    context.x++;
+    context.sr.z = context.x == 0;
+    context.sr.n = CHECK_BIT(context.x, 7);
+}
+
+void iny(m6502Instruction *instruction)
+{
+    context.y++;
+    context.sr.z = context.y == 0;
+    context.sr.n = CHECK_BIT(context.y, 7);
 }
 
 void jmp(m6502Instruction *instruction)
