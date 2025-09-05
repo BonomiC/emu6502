@@ -27,10 +27,10 @@ void build_instruction_vector(void)
 void print_context(void)
 {
     printf("Context:\n");
-    printf("\tPC: %d\n", context.pc);
-    printf("\tA: %d\n", context.a);
-    printf("\tX: %d\n", context.x);
-    printf("\tY: %d\n", context.y);
+    printf("\tPC: 0x%04x\n", context.pc);
+    printf("\tA: %#x\n", context.a);
+    printf("\tX: %#x\n", context.x);
+    printf("\tY: %#x\n", context.y);
 }
 
 void step(void)
