@@ -2,12 +2,18 @@
 #include "cpu.h"
 
 #define ADD_INSTRUCTION(...) add_instruction((uint8_t[]){__VA_ARGS__}, sizeof((uint8_t[]){__VA_ARGS__}))
+#define ADD_PROGRAM(addr,...) add_program(addr, (uint8_t[]){__VA_ARGS__}, sizeof((uint8_t[]){__VA_ARGS__}))
 
 void add_instruction(uint8_t *instructions, uint8_t size)
 {
     static uint16_t ram_pos = 0x0600;
     memcpy(mainMemory + ram_pos, instructions, size);
     ram_pos += size;
+}
+
+void add_program(uint16_t addr, uint8_t *program, uint8_t size)
+{
+    memcpy(mainMemory + addr, program, size);
 }
 
 int main(int argc, char** argv)
