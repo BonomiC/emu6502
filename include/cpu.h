@@ -55,5 +55,11 @@ void bpl(m6502Instruction *instruction);
 void lda(m6502Instruction *instruction);
 void ldx(m6502Instruction *instruction);
 void ldy(m6502Instruction *instruction);
+void pha(m6502Instruction *instruction);
+void php(m6502Instruction *instruction);
+void pla(m6502Instruction *instruction);
+void plp(m6502Instruction *instruction);
+void tsx(m6502Instruction *instruction);
+void txs(m6502Instruction *instruction);
 
 #endif /* CPU_H_ */

@@ -117,3 +117,42 @@ void ldy(m6502Instruction *instruction)
     context.sr.n = CHECK_BIT(value, 7);
     context.y = value;
 }
+
+void pha(m6502Instruction *instruction)
+{
+    push_stack(context.a);
+}
+
+void php(m6502Instruction *instruction)
+{
+    m6502StatusReg sr = context.sr;
+    sr.x = 1;
+    sr.b = 1;
+    push_stack(*((uint8_t*)&sr)); // Seems like a hack, definitely test this!
+}
+
+void pla(m6502Instruction *instruction)
+{
+    context.a = pop_stack();
+}
+
+void plp(m6502Instruction *instruction)
+{
+    uint8_t val = pop_stack();
+    m6502StatusReg sr = *(m6502StatusReg*)&val; // Seems like a hack, definitely test this!
+    uint8_t mask = 0xCF;
+    uint8_t result = (*(uint8_t*)&context.sr & ~mask) | (*(uint8_t*)&sr & mask);
+    context.sr = *(m6502StatusReg*)&result;
+}
+
+void tsx(m6502Instruction *instruction)
+{
+    context.x = context.sp;
+    context.sr.z = context.x == 0;
+    context.sr.n = CHECK_BIT(context.x, 7);
+}
+
+void txs(m6502Instruction *instruction)
+{
+    context.sp = context.x;
+}

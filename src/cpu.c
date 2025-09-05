@@ -30,6 +30,7 @@ void print_context(void)
 {
     printf("Context:\n");
     printf("\tPC: 0x%04x\n", context.pc);
+    printf("\tSP: %#x\n", context.sp);
     printf("\tA: %#x\n", context.a);
     printf("\tX: %#x\n", context.x);
     printf("\tY: %#x\n", context.y);
@@ -194,5 +195,17 @@ m6502Instruction instructions[MAX_INSTRUCTION_SIZE] =
     {&ldy, 0xA4, ZERO_PAGE, 2, 3},
     {&ldy, 0xB4, ZERO_PAGE_X, 2, 4},
     {&ldy, 0xAC, ABSOLUTE, 3, 4},
-    {&ldy, 0xBC, ABSOLUTE_X, 3, 4}
+    {&ldy, 0xBC, ABSOLUTE_X, 3, 4},
+
+    {&pha, 0x48, IMPLIED, 1, 3},
+
+    {&php, 0x08, IMPLIED, 1, 3},
+
+    {&pla, 0x68, IMPLIED, 1, 4},
+
+    {&plp, 0x28, IMPLIED, 1, 4},
+
+    {&tsx, 0xBA, IMPLIED, 1, 2},
+
+    {&txs, 0x9A, IMPLIED, 1, 2}
 };
