@@ -82,6 +82,10 @@ void pha(m6502Instruction *instruction);
 void php(m6502Instruction *instruction);
 void pla(m6502Instruction *instruction);
 void plp(m6502Instruction *instruction);
+void rol(m6502Instruction *instruction);
+void ror(m6502Instruction *instruction);
+void rti(m6502Instruction *instruction);
+void rts(m6502Instruction *instruction);
 void tsx(m6502Instruction *instruction);
 void txs(m6502Instruction *instruction);
 

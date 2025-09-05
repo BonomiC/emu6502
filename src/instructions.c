@@ -306,6 +306,65 @@ void plp(m6502Instruction *instruction)
     context.sr = *(m6502StatusReg*)&result;
 }
 
+void rol(m6502Instruction *instruction)
+{
+    if (instruction->addrMode == IMPLIED)
+    {
+        uint8_t newC = CHECK_BIT(context.a, 7);
+        uint8_t newV = (context.a << 1) + context.sr.c;
+        context.sr.c = newC;
+        context.a = newV;
+        context.sr.z = context.a == 0;
+        context.sr.n = CHECK_BIT(context.a, 7);
+    }
+
+    uint8_t newC = CHECK_BIT(instruction->value, 7);
+    uint8_t newV = (instruction->value << 1) + context.sr.c;
+    context.sr.c = newC;
+    context.sr.z = newV == 0;
+    context.sr.n = CHECK_BIT(newV, 7);
+
+    mainMemory[instruction->address] = newV;
+}
+
+void ror(m6502Instruction *instruction)
+{
+    if (instruction->addrMode == IMPLIED)
+    {
+        uint8_t newC = CHECK_BIT(context.a, 0);
+        uint8_t newV = (context.a >> 1) | (((uint8_t)context.sr.c) << 7);
+        context.sr.c = newC;
+        context.a = newV;
+        context.sr.z = context.a == 0;
+        context.sr.n = CHECK_BIT(context.a, 7);
+    }
+
+    uint8_t newC = CHECK_BIT(instruction->value, 0);
+    uint8_t newV = (instruction->value >> 1) | (((uint8_t)context.sr.c) << 7);
+    context.sr.c = newC;
+    context.sr.z = newV == 0;
+    context.sr.n = CHECK_BIT(newV, 7);
+
+    mainMemory[instruction->address] = newV;
+}
+
+void rti(m6502Instruction *instruction)
+{
+    uint8_t val = pop_stack();
+    m6502StatusReg sr = *(m6502StatusReg*)&val; // Seems like a hack, definitely test this!
+    uint8_t mask = 0xCF;
+    uint8_t result = (*(uint8_t*)&context.sr & ~mask) | (*(uint8_t*)&sr & mask);
+    context.sr = *(m6502StatusReg*)&result;
+
+    context.pc = pop_stack_word();
+}
+
+void rts(m6502Instruction *instruction)
+{
+    context.pc = pop_stack_word();
+    context.pc++;
+}
+
 void tsx(m6502Instruction *instruction)
 {
     context.x = context.sp;
