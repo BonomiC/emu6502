@@ -39,6 +39,7 @@ void adc(m6502Instruction *instruction);
 void and(m6502Instruction *instruction);
 void asl(m6502Instruction *instruction);
 void bcc(m6502Instruction *instruction);
+void bcs(m6502Instruction *instruction);
 void lda(m6502Instruction *instruction);
 void ldx(m6502Instruction *instruction);
 void ldy(m6502Instruction *instruction);
