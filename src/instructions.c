@@ -102,7 +102,7 @@ void brk(m6502Instruction *instruction)
     sr.b = 1;
     sr.i = 1;
     push_stack(*((uint8_t*)&sr)); // Seems like a hack, definitely test this!
-    context.pc = IRQ_HANDLER;
+    memcpy(&context.pc, mainMemory + IRQ_HANDLER, 2);
 }
 
 void lda(m6502Instruction *instruction)
