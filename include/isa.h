@@ -11,7 +11,7 @@
 
 typedef enum
 {
-    ACCUMULATOR,
+    IMPLIED,
     IMMEDIATE,
     ZERO_PAGE,
     ZERO_PAGE_X,

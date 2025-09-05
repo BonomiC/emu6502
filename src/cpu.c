@@ -80,7 +80,7 @@ void step(void)
     // Get value based on address mode
     switch (instruction->addrMode)
     {
-    case ACCUMULATOR:
+    case IMPLIED:
         break;
     case IMMEDIATE:
         instruction->value = operand.l;
@@ -154,7 +154,7 @@ m6502Instruction instructions[MAX_INSTRUCTION_SIZE] =
     {&and, 0x21, INDIRECT_X, 2, 6},
     {&and, 0x31, INDIRECT_Y, 2, 5},
 
-    {&asl, 0x0A, ACCUMULATOR, 1, 2},
+    {&asl, 0x0A, IMPLIED, 1, 2},
     {&asl, 0x06, ZERO_PAGE, 2, 5},
     {&asl, 0x16, ZERO_PAGE_X, 2, 6},
     {&asl, 0x0E, ABSOLUTE, 3, 6},

@@ -19,7 +19,7 @@ typedef struct m6502StatusReg
     uint8_t i : 1; // Interrupt
     uint8_t d : 1; // Decimal
     uint8_t b : 1; // Break
-    uint8_t   : 1; // ignored
+    uint8_t x : 1; // ignored
     uint8_t v : 1; // Overflow
     uint8_t n : 1; // Negative
 } m6502StatusReg;

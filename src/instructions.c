@@ -19,7 +19,7 @@ void and(m6502Instruction *instruction)
 
 void asl(m6502Instruction *instruction)
 {
-    if (instruction->addrMode == ACCUMULATOR)
+    if (instruction->addrMode == IMPLIED)
     {
         context.sr.c = CHECK_BIT(context.a, 7);
         context.a <<= 1;
