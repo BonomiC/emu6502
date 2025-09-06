@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include "cpu.h"
 #include "rom.h"
+#include "pager.h"
 
 #define ADD_INSTRUCTION(...) add_instruction((uint8_t[]){__VA_ARGS__}, sizeof((uint8_t[]){__VA_ARGS__}))
 #define ADD_PROGRAM(addr,...) add_program(addr, (uint8_t[]){__VA_ARGS__}, sizeof((uint8_t[]){__VA_ARGS__}))
@@ -140,6 +141,7 @@ int main(int argc, char** argv)
     while (mainMemory[context.pc] != 0x00)
     {
         step();
+        step_pager();
         print_context();
         getchar();
     }
