@@ -133,12 +133,12 @@ void step(void)
         instruction->value = context.memory[instruction->address];
         break;
     case INDIRECT_X:
-        instruction->address = context.memory[(uint16_t)operand.l + context.x];
+        memcpy(&instruction->address, context.memory + operand.l + context.x, sizeof(instruction->address));
         instruction->value = context.memory[instruction->address];
         break;
     case INDIRECT_Y:
     {
-        instruction->address = context.memory[operand.l];
+        memcpy(&instruction->address, context.memory + operand.l, sizeof(instruction->address));
         instruction->address += context.y;
         instruction->value = context.memory[instruction->address];
         break;
