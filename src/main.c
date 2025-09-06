@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include "cpu.h"
+#include "rom.h"
 
 #define ADD_INSTRUCTION(...) add_instruction((uint8_t[]){__VA_ARGS__}, sizeof((uint8_t[]){__VA_ARGS__}))
 #define ADD_PROGRAM(addr,...) add_program(addr, (uint8_t[]){__VA_ARGS__}, sizeof((uint8_t[]){__VA_ARGS__}))
@@ -113,14 +114,36 @@ int main(int argc, char** argv)
     // ADD_INSTRUCTION(0xa9, 0x01, 0x8d, 0x00, 0x02, 0xa9, 0x05, 0x8d, 0x01, 0x02, 0xa9, 0x08, 0x8d, 0x02, 0x02, 0xCB);
     // ADD_INSTRUCTION(0xa9, 0xc0, 0xaa, 0xe8, 0x69, 0xc4, 0xCB);
 
-    ADD_INSTRUCTION(0xa2, 0x08, 0xca, 0x8e, 0x00, 0x02, 0xe0, 0x03, 0xd0, 0xf8, 0x8e, 0x01, 0x02, 0xCB);
+    // ADD_INSTRUCTION(0xa2, 0x08, 0xca, 0x8e, 0x00, 0x02, 0xe0, 0x03, 0xd0, 0xf8, 0x8e, 0x01, 0x02, 0xCB);
 
-    while (!context.halted)
+    // uint16_t irq = 0xCBCB;
+    // mainMemory[irq] = 0xCB;
+    // memcpy(mainMemory + IRQ_HANDLER, &irq, 2);
+
+    if (argc > 1)
+    {
+        uint16_t romSize = read_rom(argv[1]);
+        if (romSize == 0)
+        {
+            return 1;
+        }
+        printf("RomSize: %d\n", romSize);
+
+        add_program(0x600, romBuffer, romSize);
+    }
+    else
+    {
+        ADD_INSTRUCTION(0xa2, 0x08, 0xca, 0x8e, 0x00, 0x02, 0xe0, 0x03, 0xd0, 0xf8, 0x8e, 0x01, 0x02, 0xCB);
+    }
+
+    // while (!context.halted)
+    while (mainMemory[context.pc] != 0x00)
     {
         step();
         print_context();
-        // getchar();
+        getchar();
     }
+    context.pc++;
 
     print_context();
 
