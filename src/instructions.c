@@ -188,7 +188,7 @@ void dey(m6502Instruction *instruction)
 
 void eor(m6502Instruction *instruction)
 {
-    context.a = context.a | instruction->value;
+    context.a = context.a ^ instruction->value;
     context.sr.z = context.a == 0;
     context.sr.n = CHECK_BIT(context.a, 7);
 }
