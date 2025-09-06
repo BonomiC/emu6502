@@ -37,8 +37,13 @@ void print_context(void)
     printf("\tA: %#x\n", context.a);
     printf("\tX: %#x\n", context.x);
     printf("\tY: %#x\n", context.y);
-    printf("\tC: %#x\n", context.sr.c);
-    printf("\tV: %#x\n", context.sr.v);
+    printf("\tNV-BDIZC\n");
+    printf("\t");
+    for (int8_t i = 7; i >= 0; i--)
+    {
+        printf("%d", (*(uint8_t*)&context.sr & 1 << i) >> i);
+    }
+    printf("\n\n");
 }
 
 void push_stack(uint8_t value)
