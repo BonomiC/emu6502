@@ -440,3 +440,8 @@ void tya(m6502Instruction *instruction)
     context.sr.z = context.a == 0;
     context.sr.n = CHECK_BIT(context.a, 7);
 }
+
+void hlt(m6502Instruction *instruction)
+{
+    context.halted = 1;
+}

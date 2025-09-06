@@ -100,4 +100,6 @@ void txa(m6502Instruction *instruction);
 void txs(m6502Instruction *instruction);
 void tya(m6502Instruction *instruction);
 
+void hlt(m6502Instruction *instruction);
+
 #endif /* CPU_H_ */

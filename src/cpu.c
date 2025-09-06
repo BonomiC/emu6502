@@ -360,5 +360,7 @@ m6502Instruction instructions[MAX_INSTRUCTION_SIZE] =
 
     {&txs, 0x9A, IMPLIED, 1, 2},
 
-    {&tya, 0x98, IMPLIED, 1, 2}
+    {&tya, 0x98, IMPLIED, 1, 2},
+
+    {&hlt, 0xCB, IMPLIED, 1, 2}
 };
