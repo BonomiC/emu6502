@@ -221,7 +221,7 @@ void jmp(m6502Instruction *instruction)
 
 void jsr(m6502Instruction *instruction)
 {
-    push_stack_word(context.pc);
+    push_stack_word(context.pc - 1);
     context.pc = instruction->operand.w;
 }
 
