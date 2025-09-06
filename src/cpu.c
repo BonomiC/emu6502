@@ -11,6 +11,8 @@ void initialize(void)
     memset(mainMemory, 0, MEMORY_SIZE);
 
     context.sp = 0xFF; // Common for stack pointer to init to end
+    context.sr.x = 1;
+    context.sr.b = 1;
 
     context.memory = mainMemory;
 
