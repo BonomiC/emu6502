@@ -216,7 +216,7 @@ void iny(m6502Instruction *instruction)
 
 void jmp(m6502Instruction *instruction)
 {
-    context.pc = instruction->operand.w;
+    context.pc = instruction->address;
 }
 
 void jsr(m6502Instruction *instruction)
