@@ -34,11 +34,8 @@ void build_instruction_vector(void)
 void print_context(void)
 {
     printf("Context:\n");
-    printf("\tPC: 0x%04x\n", context.pc);
-    printf("\tSP: %#x\n", context.sp);
-    printf("\tA: %#x\n", context.a);
-    printf("\tX: %#x\n", context.x);
-    printf("\tY: %#x\n", context.y);
+    printf("\tA=$%02x X=$%02x Y=$%02x\n", context.a, context.x, context.y);
+    printf("\tSP=$%02x PC=$%04x\n", context.sp, context.pc);
     printf("\tNV-BDIZC\n");
     printf("\t");
     for (int8_t i = 7; i >= 0; i--)
