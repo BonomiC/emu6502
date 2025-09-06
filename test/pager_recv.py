@@ -1,44 +1,64 @@
-#!/opt/homebrew/bin/python3
+import sys
+from PyQt6.QtWidgets import QApplication, QWidget, QVBoxLayout, QTextEdit
+from PyQt6.QtNetwork import QUdpSocket, QHostAddress
+from PyQt6.QtGui import QFont
+from PyQt6.QtCore import Qt
 
-import os
-import socket
+class UdpReceiverApp(QWidget):
+    def __init__(self):
+        super().__init__()
+        self.setWindowTitle("PyQt UDP Receiver")
+        self.setGeometry(100, 100, 465, 340)
 
-def clear_console():
-    """Clears the console screen based on the operating system."""
-    if os.name == 'nt':  # For Windows
-        os.system('cls')
-    else:  # For macOS and Linux
-        os.system('clear')
+        self.text_edit = QTextEdit(self)
+        self.text_edit.setReadOnly(True)
 
-def print_page(data: bytes):
-    i = 0
-    for x in range(16):
-        print('06' + f'{x:02x}: ', end='')
-        for y in range(16):
-            print(f'{data[i]:02x} ', end='')
-            i += 1
-        print()
+        font = QFont("Monospace")  # You can specify a preferred monospace font like "Courier New", "Consolas", etc.
+        font.setStyleHint(QFont.StyleHint.Monospace) # Or QFont.TypeWriter
+        self.text_edit.setFont(font)
+        self.text_edit.setAlignment(Qt.AlignmentFlag.AlignHCenter)
+        self.text_edit.setAlignment(Qt.AlignmentFlag.AlignVCenter)
 
-# Create a UDP socket
-server_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-# server_socket.setblocking(False)
+        self.text_edit.setVerticalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
 
-# Bind the socket to an address and port
-server_address = ('', 6502)  # Listen on all interfaces, port 12000
-server_socket.bind(server_address)
+        layout = QVBoxLayout()
+        layout.addWidget(self.text_edit)
+        self.setLayout(layout)
 
-print(f"Listening for UDP packets on port {server_address[1]}...")
+        self.udp_socket = QUdpSocket(self)
+        # Bind to any available IPv4 address on port 12345
+        if not self.udp_socket.bind(QHostAddress.SpecialAddress.AnyIPv4, 6502):
+            self.text_edit.append("Error: Could not bind UDP socket.")
+            return
 
-# Receive data in a loop
-buffer_size = 256  # Maximum bytes to receive
-try:
-    while True:
-        data, client_address = server_socket.recvfrom(buffer_size)
-        clear_console()
-        print_page(data)
+        self.udp_socket.readyRead.connect(self.read_pending_datagrams)
+        self.text_edit.append("UDP Receiver started on port 12345...")
 
-except KeyboardInterrupt:
-    print("Server stopped.")
-finally:
-    server_socket.close()
+    def read_pending_datagrams(self):
+        while self.udp_socket.hasPendingDatagrams():
+            datagram, sender_address, sender_port = self.udp_socket.readDatagram(self.udp_socket.pendingDatagramSize())
+            self.text_edit.clear()
+            self.print_page(datagram)
+
+    def print_page(self, data: bytes):
+        page_str = '      '
+
+        for x in range(16):
+            page_str += f'{x:02x} '
+        page_str += '\n'
+
+        i = 0
+        for x in range(16):
+            page_str += '06' + f'{x:x}0: '
+            for y in range(16):
+                page_str += f'{data[i]:02x} '
+                i += 1
+            page_str += '\n'
+
+        self.text_edit.setText(page_str)
+
+if __name__ == '__main__':
+    app = QApplication(sys.argv)
+    receiver = UdpReceiverApp()
+    receiver.show()
+    sys.exit(app.exec())
