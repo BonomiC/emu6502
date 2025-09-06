@@ -144,7 +144,7 @@ void clv(m6502Instruction *instruction)
 void cmp(m6502Instruction *instruction)
 {
     uint8_t result = context.a - instruction->value;
-    context.sr.z = result = 0;
+    context.sr.z = result == 0;
     context.sr.c = context.a >= instruction->value;
     context.sr.n = CHECK_BIT(result, 7);
 }
@@ -152,7 +152,7 @@ void cmp(m6502Instruction *instruction)
 void cpx(m6502Instruction *instruction)
 {
     uint8_t result = context.x - instruction->value;
-    context.sr.z = result = 0;
+    context.sr.z = result == 0;
     context.sr.c = context.x >= instruction->value;
     context.sr.n = CHECK_BIT(result, 7);
 }
@@ -160,7 +160,7 @@ void cpx(m6502Instruction *instruction)
 void cpy(m6502Instruction *instruction)
 {
     uint8_t result = context.y - instruction->value;
-    context.sr.z = result = 0;
+    context.sr.z = result == 0;
     context.sr.c = context.y >= instruction->value;
     context.sr.n = CHECK_BIT(result, 7);
 }
