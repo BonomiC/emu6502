@@ -5,7 +5,7 @@ void adc(m6502Instruction *instruction)
     m6502Word res = {.w=(uint16_t)context.a + instruction->value + context.sr.c};
     context.sr.c = res.w > 0xFF;
     context.sr.z = res.w == 0;
-    context.sr.v = CHECK_BIT((res.w ^ context.a) & (res.w ^ instruction->value), 7);
+    context.sr.v = (~(instruction->value ^ context.a) & (res.l ^ context.a) & 0x80) != 0;
     context.sr.n = CHECK_BIT(res.w, 7);
     context.a = res.l;
 }
