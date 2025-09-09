@@ -3,15 +3,22 @@
 #include "rom.h"
 #include "pager.h"
 
+#include <SDL3/SDL.h>
+
+int	 usleep(useconds_t) __DARWIN_ALIAS_C(usleep);
+
 #define ADD_INSTRUCTION(...) add_instruction((uint8_t[]){__VA_ARGS__}, sizeof((uint8_t[]){__VA_ARGS__}))
 #define ADD_PROGRAM(addr,...) add_program(addr, (uint8_t[]){__VA_ARGS__}, sizeof((uint8_t[]){__VA_ARGS__}))
+
+#define PIXEL_SIZE 10
+#define ROWS 32
+#define COLS 32
 
 void add_instruction(uint8_t *instructions, uint16_t size)
 {
     static uint16_t ram_pos = 0x0600;
     memcpy(mainMemory + ram_pos, instructions, size);
     ram_pos += size;
-    printf("RAM SIZE: %x\n", ram_pos);
 }
 
 void add_program(uint16_t addr, uint8_t *program, uint16_t size)
@@ -24,102 +31,6 @@ int main(int argc, char** argv)
     initialize();
 
     context.pc = 0x0600;
-
-    // ADD_INSTRUCTION(0xA9, 27); // LDA #27
-
-    // ADD_INSTRUCTION(0xAD, 0xCD, 0xAB); // LDA $ABCD
-
-    // ADD_INSTRUCTION(0x69, 0xA); // ADC #10
-
-    // ADD_INSTRUCTION(0xA2, 0x10); // LDX #10
-
-    // ADD_INSTRUCTION(0x65, 0xBF); // ADC $BF
-
-    // ADD_INSTRUCTION(0x75, 0xAF); // ADC $AF,X
-
-    // ADD_INSTRUCTION(0x0A); // ASL
-
-    // ADD_INSTRUCTION(0x06, 0xCD); // ASL $CD
-
-    // ADD_INSTRUCTION(0xA4, 0xCD); // LDY $CD
-
-    // ADD_INSTRUCTION(0x90, -6); // BCC -6 // Will cause loop prev 2 instructions until carry bit is set
-
-    // mainMemory[0xABCD] = 195;
-    // mainMemory[0x00BF] = 20;
-    // mainMemory[0x00CD] = 17;
-
-    // ADD_INSTRUCTION(
-    //     0xA9,
-    //     0x05,
-    //     0xA2,
-    //     0x03,
-    //     0xA0,
-    //     0x0F,
-    //     0x69,
-    //     0x07,
-    //     0x29,
-    //     0x0A,
-    //     0x0A,
-    //     0x90,
-    //     0x02,
-    //     0xA9,
-    //     0xFF,
-    //     0xA9,
-    //     0x42); // Simple test made by chatgpt, ends with A=66, X=3, Y=15 (Decimal)
-
-    // ADD_INSTRUCTION(0xA9, 0x00, 0xA2, 0xFF, 0xA0, 0x10,
-    //     0xA9, 0x05, 0x69, 0x07,
-    //     0x69, 0xF5,
-    //     0x29, 0x03,
-    //     0x29, 0x0E,
-    //     0xA9, 0x20, 0x0A,
-    //     0xA9, 0xC0, 0x0A,
-    //     0xA9, 0x01, 0x90, 0x02, 0xA9, 0xFF, 0xA9, 0x11,
-    //     0xA9, 0x80, 0x0A, 0x90, 0x02, 0xA9, 0x22,
-    //     0xA2, 0x33, 0xA0, 0x44); // More advanced test made by chatgpt, ends with A=0x22, X=0x33, Y=0x44
-
-    // ADD_INSTRUCTION(
-    //     0xA9, 0x00, 0xA2, 0xAA, 0xA0, 0x55,
-    //     0xA9, 0x05, 0x69, 0x07, 0xB0, 0x02, 0xA9, 0x11,
-    //     0xA9, 0xF0, 0x69, 0x20, 0x90, 0x02, 0xA9, 0x22,
-    //     0xA9, 0x20, 0x0A, 0xB0, 0x02, 0xA9, 0x33,
-    //     0xA9, 0xC0, 0x0A, 0x90, 0x02, 0xA9, 0x44,
-    //     0xA9, 0xFF, 0x29, 0x0F, 0x29, 0xF0
-    // ); // ChatGPT again, post BCS test, ends with A=0x00, X=0xAA, Y=0x55
-
-    // ADD_INSTRUCTION(
-    //     0xA2, 0xFF, 0x9A,
-    //     0xA9, 0x42, 0x48, 0xA9, 0x00, 0x68,
-    //     0xA9, 0x55, 0x48, 0x68, 0x08, 0xA9, 0x11, 0x28,
-    //     0xA2, 0xAA, 0x9A, 0xA2, 0x00, 0xBA
-    // ); // ChatGPT Stack test, ends with A=0x11, X=0xAA, SP = 0xAA
-
-    // Test for BRK & JMP - Works - Expected A=0x55, X=0xFF, SP=0xFF
-    // /* $0600 program */
-    // ADD_PROGRAM(0x0600, 0xA2, 0xFF, 0x9A, 0xA9, 0x42, 0x00);
-    // /* $0620 handler */
-    // ADD_PROGRAM(0x0620, 0x68, 0x68, 0x68, 0xA9, 0x55, 0x4C, 0x25, 0x06);
-    // /* $FFFE vector */
-    // ADD_PROGRAM(IRQ_HANDLER, 0x20, 0x06);
-
-    // ADD_INSTRUCTION(
-    //     0xA2, 0xFF, 0x9A,       /* LDX #$FF, TXS */
-    //     0xA9, 0x50, 0xE9, 0x20, /* LDA #$50, SBC #$20 */
-    //     0xA9, 0x10, 0xE9, 0x20, /* LDA #$10, SBC #$20 */
-    //     0xA9, 0x80, 0xE9, 0x01  /* LDA #$80, SBC #$01 */
-    // );
-
-    // ADD_INSTRUCTION(0xA9, 0x50, 0xE9, 0x20); /* LDA #$50, SBC #$20 */
-
-    // ADD_INSTRUCTION(0xa9, 0x01, 0x8d, 0x00, 0x02, 0xa9, 0x05, 0x8d, 0x01, 0x02, 0xa9, 0x08, 0x8d, 0x02, 0x02, 0xCB);
-    // ADD_INSTRUCTION(0xa9, 0xc0, 0xaa, 0xe8, 0x69, 0xc4, 0xCB);
-
-    // ADD_INSTRUCTION(0xa2, 0x08, 0xca, 0x8e, 0x00, 0x02, 0xe0, 0x03, 0xd0, 0xf8, 0x8e, 0x01, 0x02, 0xCB);
-
-    // uint16_t irq = 0xCBCB;
-    // mainMemory[irq] = 0xCB;
-    // memcpy(mainMemory + IRQ_HANDLER, &irq, 2);
 
     if (argc > 1)
     {
@@ -137,17 +48,92 @@ int main(int argc, char** argv)
         ADD_INSTRUCTION(0xa2, 0x08, 0xca, 0x8e, 0x00, 0x02, 0xe0, 0x03, 0xd0, 0xf8, 0x8e, 0x01, 0x02, 0xCB);
     }
 
-    // while (!context.halted)
-    while (mainMemory[context.pc] != 0x00)
-    {
-        step();
-        step_pager();
-        print_context();
-        getchar();
+    // Initialize SDL
+    if (!SDL_Init(SDL_INIT_VIDEO)) {
+        SDL_Log("SDL could not initialize! SDL_Error: %s\n", SDL_GetError());
+        return 1;
     }
-    context.pc++;
 
-    print_context();
+    // Create a window
+    SDL_Window* window = NULL;
+    SDL_Renderer* renderer = NULL;
+    SDL_CreateWindowAndRenderer("Simple SDL3 Example", 320, 320, 0, &window, &renderer);
+    if (window == NULL) {
+        SDL_Log("Window could not be created! SDL_Error: %s\n", SDL_GetError());
+        SDL_Quit();
+        return 1;
+    }
+
+    SDL_FRect pixels[ROWS*COLS];
+    for (int r = 0; r < ROWS; r++)
+    {
+        for (int c = 0; c < COLS; c++)
+        {
+            pixels[r * ROWS + c] = (SDL_FRect){.x=c*PIXEL_SIZE, .y=r*PIXEL_SIZE, .w=10, .h=10};
+        }
+    }
+
+    // Event loop
+    SDL_Event e;
+    int quit = 0;
+    while (!quit) {
+        while (SDL_PollEvent(&e) != 0) {
+            if (e.type == SDL_EVENT_QUIT) {
+                quit = 1;
+            }
+            else if (e.type == SDL_EVENT_KEY_DOWN)
+            {
+                switch (e.key.key)
+                {
+                case SDLK_W:
+                    mainMemory[0xFF] = 0x77;
+                    break;
+                case SDLK_A:
+                    mainMemory[0xFF] = 0x61;
+                    break;
+                case SDLK_S:
+                    mainMemory[0xFF] = 0x73;
+                    break;
+                case SDLK_D:
+                    mainMemory[0xFF] = 0x64;
+                    break;
+                }
+            }
+        }
+
+        mainMemory[0xFE] = rand();
+
+        // Have an instruction to execute, so step the CPU
+        if (mainMemory[context.pc] != 0x00)
+        {
+            step();
+            step_pager();
+            print_context();
+        }
+
+        SDL_SetRenderDrawColor(renderer, 0, 0, 0, SDL_ALPHA_OPAQUE);
+        SDL_RenderClear(renderer);
+
+        for (int r = 0; r < ROWS; r++)
+        {
+            for (int c = 0; c < COLS; c++)
+            {
+                uint8_t color = mainMemory[0x0200 + (r*ROWS+c)];
+                uint8_t red = color > 0 ? 255 : 0;
+
+                SDL_SetRenderDrawColor(renderer, red, 0, 0, SDL_ALPHA_OPAQUE);
+                SDL_RenderFillRect(renderer, &pixels[r*ROWS+c]);
+            }
+        }
+
+        SDL_RenderPresent(renderer);
+
+        // getchar();
+    }
+
+    // Destroy window and quit SDL
+    SDL_DestroyWindow(window);
+    SDL_Quit();
 
     return 0;
 }
