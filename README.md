@@ -11,3 +11,4 @@ A very basic MOS6502 interpreter. Might eventually be used in an NES emulator ðŸ
 - [6502 instruction set](https://www.masswerk.at/6502/6502_instruction_set.html)
 - [Study of the techniques for emulation programming](http://www.codeslinger.co.uk/files/emu.pdf)
 - [easy6502 online simulator](https://skilldrick.github.io/easy6502/)
+- [Book](https://bugzmanov.github.io/nes_ebook/chapter_1.html)
