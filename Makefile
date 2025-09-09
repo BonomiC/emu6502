@@ -10,6 +10,8 @@ CFLAGS = -fno-common
 # Executable name
 TARGET = m6502
 
+LIBS = -lSDL3
+
 # Find all C source files in the src directory
 SOURCES = $(wildcard $(SRCDIR)/*.c)
 
@@ -26,7 +28,7 @@ $(BINDIR):
 
 # Rule to link object files into the executable
 $(BINDIR)/$(TARGET): $(OBJECTS) | $(BINDIR)
-	$(CC) $(OBJECTS) -o $@
+	$(CC) $(OBJECTS) -o $@ $(LIBS)
 
 # Rule to compile C source files into object files
 $(OBJDIR)/%.o: $(SRCDIR)/%.c | $(OBJDIR)
