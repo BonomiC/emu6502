@@ -75,6 +75,7 @@ uint16_t pop_stack_word(void)
 
 void step(void)
 {
+    printf("PC=$%04x - ", context.pc);
     // Get the next opcode from memory
     uint8_t opcode = mainMemory[context.pc++];
 
@@ -92,6 +93,8 @@ void step(void)
     memcpy(&operand.w, &context.memory[context.pc], instruction->size-1);
     context.pc += instruction->size-1;
     instruction->operand = operand;
+
+    printf("Exec: $%02x $%04x\n", opcode, operand.w);
 
     // Get value based on address mode
     switch (instruction->addrMode)
