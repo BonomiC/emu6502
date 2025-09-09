@@ -106,11 +106,11 @@ void step(void)
         instruction->value = context.memory[instruction->address];
         break;
     case ZERO_PAGE_X:
-        instruction->address = (uint16_t)operand.l + context.x;
+        instruction->address = operand.l + context.x;
         instruction->value = context.memory[instruction->address];
         break;
     case ZERO_PAGE_Y:
-        instruction->address = (uint16_t)operand.l + context.y;
+        instruction->address = operand.l + context.y;
         instruction->value = context.memory[instruction->address];
         break;
     case ABSOLUTE:
