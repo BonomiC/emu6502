@@ -257,6 +257,7 @@ void lsr(m6502Instruction *instruction)
         context.a >>= 1;
         context.sr.z = context.a == 0;
         context.sr.n = 0;
+        return;
     }
 
     context.sr.c = CHECK_BIT(instruction->value, 0);
@@ -316,6 +317,7 @@ void rol(m6502Instruction *instruction)
         context.a = newV;
         context.sr.z = context.a == 0;
         context.sr.n = CHECK_BIT(context.a, 7);
+        return;
     }
 
     uint8_t newC = CHECK_BIT(instruction->value, 7);
@@ -337,6 +339,7 @@ void ror(m6502Instruction *instruction)
         context.a = newV;
         context.sr.z = context.a == 0;
         context.sr.n = CHECK_BIT(context.a, 7);
+        return;
     }
 
     uint8_t newC = CHECK_BIT(instruction->value, 0);
